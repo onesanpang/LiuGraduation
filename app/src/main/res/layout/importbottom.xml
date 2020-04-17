@@ -32,6 +32,31 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/bottom_tab_pratice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/bottom_tab_pratice_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:clickable="false" />
+
+        <TextView
+            android:id="@+id/bottom_tab_pratice_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="班级"
+            android:textSize="12dp"
+            android:textColor="#cccccc" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/bottom_tab_class"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -55,6 +80,7 @@
             android:textSize="12dp"
             android:textColor="#cccccc" />
     </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/bottom_tab_my"
