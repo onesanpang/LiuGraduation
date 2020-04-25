@@ -10,21 +10,26 @@
     <EditText
         android:id="@+id/logon_edit_mail"
         android:hint="请输入账号"
+        android:textSize="15dp"
+        android:background="@drawable/linear_background"
+        android:layout_marginTop="40dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="35dp" />
     <EditText
         android:id="@+id/logon_edit_password"
         android:hint="请输入密码"
+        android:background="@drawable/linear_background"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:textSize="15dp"
+        android:layout_height="35dp" />
     <Button
         android:id="@+id/mian_logon_button"
         android:text="登陆"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="40dp" />
     <Button
         android:id="@+id/main_register_button"
         android:text="注册"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="40dp" />
 </LinearLayout>
