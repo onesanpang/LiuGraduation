@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".ParentActivity">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_marginTop="35dp"
+        android:gravity="center_vertical"
+        android:layout_height="30dp">
+        <ImageView
+            android:id="@+id/parent_image_back"
+            android:layout_marginLeft="2dp"
+            android:src="@mipmap/back"
+            android:layout_width="25dp"
+            android:layout_height="25dp" />
+
+        <TextView
+            android:id="@+id/parent_text_title"
+            android:textSize="19dp"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:text="加入班级"
+            android:paddingRight="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <TextView
+        android:textColor="#000000"
+        android:textSize="13dp"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+        android:background="#F8F8F8"
+        android:text="班级号由您学校的任课老师创建班级后生成，请向老师咨询是否已经在小圆口算创建班级"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:text="班级号"
+            android:textSize="16dp"
+            android:layout_marginTop="10dp"
+            android:textColor="#000000"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:layout_marginTop="5dp"
+            android:hint="请填写老师提供的班级号"
+            android:textSize="14dp"
+            android:textColor="#000000"
+            android:background="@color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
+        <View
+            android:background="#D8D8D8"
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"/>
+        <TextView
+            android:text="姓名"
+            android:textSize="16dp"
+            android:layout_marginTop="10dp"
+            android:textColor="#000000"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:layout_marginTop="5dp"
+            android:hint="请填写孩子的真实姓名"
+            android:textSize="14dp"
+            android:textColor="#000000"
+            android:background="@color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
+        <View
+            android:background="#D8D8D8"
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"/>
+        <Button
+            android:layout_marginTop="20dp"
+            android:text="加入班级"
+            android:background="@drawable/buttonpractice_background"
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
+    </LinearLayout>
+
+</LinearLayout>

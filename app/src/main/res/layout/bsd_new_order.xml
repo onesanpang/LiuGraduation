@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+   <LinearLayout
+       android:orientation="vertical"
+       android:background="#ffffff"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+       <TextView
+           android:id="@+id/bottom_dialog_photo"
+           android:layout_width="match_parent"
+           android:layout_height="45dp"
+           android:gravity="center"
+           android:text="拍照"
+           android:textColor="#2981DD"
+           android:textSize="14sp"/>
+
+       <View
+           android:layout_width="match_parent"
+           android:layout_height="0.5dp"
+           android:background="#E4E4E4"/>
+
+       <TextView
+           android:id="@+id/bottom_dialog_gallery"
+           android:layout_width="match_parent"
+           android:layout_height="45dp"
+           android:gravity="center"
+           android:text="相册"
+           android:textColor="#2981DD"
+           android:textSize="14sp"/>
+   </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#E4E4E4"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp"/>
+    <TextView
+        android:background="#ffffff"
+        android:id="@+id/bottom_dialog_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:gravity="center"
+        android:text="取消"
+        android:textColor="#363636"
+        android:textSize="14sp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"/>
+</LinearLayout>

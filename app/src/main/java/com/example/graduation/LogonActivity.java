@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.graduation.java.HttpUtil;
 import com.example.graduation.java.LogonModul;
+import com.example.graduation.java.StatusBarTransparent;
 import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
@@ -67,6 +68,10 @@ public class LogonActivity extends AppCompatActivity implements View.OnClickList
         }
 
         initView();
+        if(getSupportActionBar() != null){
+            getSupportActionBar().hide();
+            StatusBarTransparent.makeStatusBarTransparent(this);
+        }
     }
 
     private void initView() {

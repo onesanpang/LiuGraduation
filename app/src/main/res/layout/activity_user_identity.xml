@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".UserIdentityActivity">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_marginTop="35dp"
+        android:gravity="center_vertical"
+        android:layout_height="30dp">
+        <ImageView
+            android:id="@+id/useridentity_image_back"
+            android:layout_marginLeft="2dp"
+            android:src="@mipmap/back"
+            android:layout_width="25dp"
+            android:layout_height="25dp" />
+
+        <TextView
+            android:id="@+id/userinfo_text_title"
+            android:textSize="19dp"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:text="填写信息"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <TextView
+        android:textColor="#000000"
+        android:textSize="25dp"
+        android:padding="10dp"
+        android:text="您的身份是"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

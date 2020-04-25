@@ -16,6 +16,7 @@
 
         <ImageButton
             android:id="@+id/bottom_tab_check_img"
+            android:src="@mipmap/camera_black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#00000000"
@@ -27,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:text="检查"
-            android:textSize="12dp"
+            android:textSize="10dp"
             android:textColor="#cccccc" />
     </LinearLayout>
 
@@ -41,6 +42,7 @@
 
         <ImageButton
             android:id="@+id/bottom_tab_pratice_img"
+            android:src="@mipmap/practice_black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#00000000"
@@ -51,8 +53,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:text="班级"
-            android:textSize="12dp"
+            android:text="练习"
+            android:textSize="10dp"
             android:textColor="#cccccc" />
     </LinearLayout>
 
@@ -66,6 +68,7 @@
 
         <ImageButton
             android:id="@+id/bottom_tab_class_img"
+            android:src="@mipmap/class_black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#00000000"
@@ -77,7 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:text="班级"
-            android:textSize="12dp"
+            android:textSize="10dp"
             android:textColor="#cccccc" />
     </LinearLayout>
 
@@ -92,6 +95,7 @@
 
         <ImageButton
             android:id="@+id/bottom_tab_my_img"
+            android:src="@mipmap/my_black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#00000000"
@@ -102,7 +106,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="我"
-            android:textSize="12dp"
+            android:textSize="10dp"
             android:textColor="#cccccc" />
     </LinearLayout>
 </LinearLayout>

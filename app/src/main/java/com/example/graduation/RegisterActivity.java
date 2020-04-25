@@ -1,5 +1,6 @@
 package com.example.graduation;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.graduation.java.HttpUtil;
 import com.example.graduation.java.RegisterModul;
+import com.example.graduation.java.StatusBarTransparent;
 import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
@@ -36,6 +38,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private Button butGetCode, butRegist;
     private RadioGroup radioGroup;
     private RadioButton butParent, butTeacher;
+    private SharedPreferences sp;
+    private SharedPreferences.Editor editor;
     private String sendMailUrl = "http://47.106.112.29:8080/user/sendMail";
     private String registerUrl = "http://47.106.112.29:8080/user/register";
 
@@ -47,6 +51,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        //隐藏标题栏
+        if (getSupportActionBar() != null){
+            getSupportActionBar().hide();
+            StatusBarTransparent.makeStatusBarTransparent(this);
+        }
         initView();
     }
 
@@ -68,16 +77,23 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         butGetCode.setOnClickListener(this);
         butRegist.setOnClickListener(this);
 
+        sp = getSharedPreferences("user",MODE_PRIVATE);
+        editor = sp.edit();
+
         //对RadioGroup进行监听
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.register_parent_but) {
-                    Toast.makeText(RegisterActivity.this, butParent.getText(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(RegisterActivity.this, butParent.getText(), Toast.LENGTH_SHORT).show();
                     identity = 1;
+                    editor.putString("identity","1");
+                    editor.commit();
                 } else if (checkedId == R.id.register_teacher_but) {
-                    Toast.makeText(RegisterActivity.this, butTeacher.getText(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(RegisterActivity.this, butTeacher.getText(), Toast.LENGTH_SHORT).show();
                     identity = 2;
+                    editor.putString("identity","2");
+                    editor.commit();
                 }
             }
         });
