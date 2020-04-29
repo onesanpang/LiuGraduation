@@ -1,19 +1,21 @@
 package com.example.graduation;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
-import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.graduation.fragment.CLassFragment;
 import com.example.graduation.fragment.CheckFragment;
@@ -36,7 +38,9 @@ import okhttp3.FormBody;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import static com.example.graduation.R.*;
+import static com.example.graduation.R.id;
+import static com.example.graduation.R.layout;
+import static com.example.graduation.R.mipmap;
 
 public class ImportActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView textCheck,textClass,textMy,textPractice;
@@ -46,7 +50,19 @@ public class ImportActivity extends AppCompatActivity implements View.OnClickLis
     //四个Tab对应的布局
     private LinearLayout mTabCheck,mTabClass,mTabMy,mTabPractice;
     private FragmentPagerAdapter mAdapter;
-
+    private String userInfoUrl = "http://47.106.112.29:8080/user/getUser";
+    private SharedPreferences sp;
+    private SharedPreferences.Editor editor;
+    private String uid;
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            editor.putString("nickName", String.valueOf(msg.obj));
+            editor.putString("identity", String.valueOf(msg.what));
+            editor.commit();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +75,7 @@ public class ImportActivity extends AppCompatActivity implements View.OnClickLis
         }
         initView();
         initDatas();
+        getUserInfo(userInfoUrl);
 
     }
 
@@ -77,6 +94,9 @@ public class ImportActivity extends AppCompatActivity implements View.OnClickLis
         imageMy = findViewById(id.bottom_tab_my_img);
         imagePractice = findViewById(id.bottom_tab_pratice_img);
         imageClass = findViewById(id.bottom_tab_class_img);
+        sp = getSharedPreferences("user",MODE_PRIVATE);
+        editor = sp.edit();
+        uid = sp.getString("uid","");
 
         mTabCheck.setOnClickListener(this);
         mTabClass.setOnClickListener(this);
@@ -174,6 +194,38 @@ public class ImportActivity extends AppCompatActivity implements View.OnClickLis
         textClass.setTextColor(Color.parseColor("#cccccc"));
         imageMy.setImageResource(mipmap.my_black);
         textMy.setTextColor(Color.parseColor("#cccccc"));
+    }
+
+    private void getUserInfo(String url){
+        RequestBody body = new FormBody.Builder()
+                .add("id",uid)
+                .build();
+        HttpUtil.sendJsonOkhttpRequest(url, body, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Log.e("response","error");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.body().toString() != null){
+                    try {
+                        JSONObject object = new JSONObject(response.body().string());
+                        if (object.has("ec")){
+                            if (object.optInt("ec") == RegisterActivity.SUCCESS){
+                                final JSONObject data = object.optJSONObject("data");
+                                Message msg = new Message();
+                                msg.what = data.optInt("identity");
+                                msg.obj = data.optString("nickName");
+                                mHandler.sendMessage(msg);
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 
 }

@@ -17,6 +17,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.example.graduation.CheckHistoryActivity;
+import com.example.graduation.ErrorBookActivity;
 import com.example.graduation.LogonActivity;
 import com.example.graduation.R;
 import com.example.graduation.RegisterActivity;
@@ -35,13 +37,13 @@ import okhttp3.FormBody;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class MyFragment extends Fragment {
+public class MyFragment extends Fragment implements View.OnClickListener {
     private SharedPreferences sp;
     private String uid;
     private String userInfoUrl = "http://47.106.112.29:8080/user/getUser";
     private String imageUrl = "http://img0.imgtn.bdimg.com/it/u=2222611632,3911399686&fm=26&gp=0.jpg";
     private ImageView imageBackground,imageIcon;
-    private LinearLayout exitLogon;
+    private LinearLayout linearError,linearStudy,exitLogon;
 
     private TextView textName,textGrade;
     @Nullable
@@ -61,6 +63,12 @@ public class MyFragment extends Fragment {
         textGrade = view.findViewById(R.id.myfragment_text_grade);
         imageIcon = view.findViewById(R.id.myfragment_image_icon);
         exitLogon = view.findViewById(R.id.myfragment_linear_exit);
+        linearError = view.findViewById(R.id.myfragment_linear_errorbook);
+        linearStudy = view.findViewById(R.id.myfragment_linear_studyhistory);
+        imageIcon.setOnClickListener(this);
+        exitLogon.setOnClickListener(this);
+        linearError.setOnClickListener(this);
+        linearStudy.setOnClickListener(this);
 
         sp = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
         uid = sp.getString("uid","");
@@ -68,22 +76,39 @@ public class MyFragment extends Fragment {
         //添加背景图片
         Glide.with(getContext()).load(imageUrl).into(imageBackground);
 
-        imageIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), UserInfoActivity.class));
-            }
-        });
 
         exitLogon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), LogonActivity.class));
-                getActivity().finish();
+
             }
         });
+
+        Log.e("nickName",sp.getString("nickName",""));
+
     }
 
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()){
+            case R.id.myfragment_text_grade:
+                startActivity(new Intent(getActivity(),UserInfoActivity.class));
+                break;
+            case R.id.myfragment_image_icon:
+                startActivity(new Intent(getActivity(), UserInfoActivity.class));
+                break;
+            case R.id.myfragment_linear_exit:
+                startActivity(new Intent(getActivity(), LogonActivity.class));
+                getActivity().finish();
+                break;
+            case R.id.myfragment_linear_errorbook:
+                startActivity(new Intent(getActivity(), ErrorBookActivity.class));
+                break;
+            case R.id.myfragment_linear_studyhistory:
+                startActivity(new Intent(getActivity(), CheckHistoryActivity.class));
+                break;
+        }
+    }
 
     private void getUserInfo(String url){
         RequestBody body = new FormBody.Builder()
@@ -107,7 +132,12 @@ public class MyFragment extends Fragment {
                                     @Override
                                     public void run() {
                                         textName.setText(data.optString("nickName"));
-                                        textGrade.setText((data.optInt("grade")+"年纪"));
+                                        if (data.optString("grade") == null){
+                                            textGrade.setText("添加年级 + ");
+                                        }else{
+                                            textGrade.setText((data.optString("grade")+"年级"));
+                                        }
+                                        Glide.with(getContext()).load("http://47.106.112.29:8080/"+data.optString("uicon")).into(imageIcon);
                                     }
                                 });
                             }

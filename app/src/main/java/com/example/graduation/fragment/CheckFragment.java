@@ -2,7 +2,9 @@ package com.example.graduation.fragment;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,17 +30,38 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.graduation.PhoneResultsActivity;
 import com.example.graduation.R;
+import com.example.graduation.java.HttpUtil;
 
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import static android.app.Activity.RESULT_OK;
 
 public class CheckFragment extends Fragment implements View.OnClickListener {
 
     private ImageView imageCamera;
-    private String url = "";//上传的url
+    private final String url = "http://47.106.112.29:8080/work/uploadAndCheck";//上传的url
     private Intent intent;
     private final int REQUEST_PERMISSIONS = 1;
     private ImageView imageIcon;
@@ -49,6 +73,11 @@ public class CheckFragment extends Fragment implements View.OnClickListener {
     private View inflate;
     private TextView bottomPhoto, bottomGallery, bottomCancel;
     private Uri imageUri;
+    private SharedPreferences sp;
+
+
+    private LinearLayout linearMyclass;
+
 
 
     @Nullable
@@ -65,6 +94,8 @@ public class CheckFragment extends Fragment implements View.OnClickListener {
         imageCamera = view.findViewById(R.id.check_image_camera);
         imageIcon = view.findViewById(R.id.check_image);
         linearCamera = view.findViewById(R.id.check_linear_camera);
+
+        sp = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
 
         imageCamera.setOnClickListener(this);
         linearCamera.setOnClickListener(this);
@@ -92,6 +123,7 @@ public class CheckFragment extends Fragment implements View.OnClickListener {
                 break;
         }
     }
+
 
     private void showBottomDialog() {
         dialog = new Dialog(getContext(), R.style.BottomStyle);
@@ -205,13 +237,89 @@ public class CheckFragment extends Fragment implements View.OnClickListener {
                     Bitmap bit = null;
                     try {
                         bit = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(uri));
+                        loadImage(compressImage(bit),url);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
-
-                    imageIcon.setImageBitmap(bit);
                 }
                 break;
         }
     }
+
+    private void loadImage(final File file,final String url){
+       final String uid = sp.getString("uid","");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient client = new OkHttpClient();
+                    //创建RequestBody
+                    RequestBody fileBody = RequestBody.create(MediaType.parse("image/png"), file);
+                    //构建MultipartBody
+                    RequestBody requestBody = new MultipartBody.Builder()
+                            .setType(MultipartBody.FORM)
+                            .addFormDataPart("file","testImage.png",fileBody)
+                            .addFormDataPart("uid",uid)
+                            .build();
+                    Request request = new Request.Builder()
+                            .url(url)
+                            .post(requestBody)
+                            .build();
+                    Response response = client.newCall(request).execute();
+                    try {
+                        JSONObject object = new JSONObject(response.body().string());
+                        if (object.optInt("ec") == 200){
+                            Intent intent = new Intent(getActivity(), PhoneResultsActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("checkresult",object.optInt("data"));
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    public static File compressImage(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
+        int options = 100;
+        while (baos.toByteArray().length / 1024 > 500) {  //循环判断如果压缩后图片是否大于500kb,大于继续压缩
+            baos.reset();//重置baos即清空baos
+            options -= 10;//每次都减少10
+            bitmap.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
+            long length = baos.toByteArray().length;
+        }
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+        Date date = new Date(System.currentTimeMillis());
+        //图片名
+        String format1 = format.format(date);
+
+        File file = new File(Environment.getExternalStorageDirectory(), format1 + ".png");
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            try {
+                fos.write(baos.toByteArray());
+                fos.flush();
+                fos.close();
+            } catch (IOException e) {
+
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+
+            e.printStackTrace();
+        }
+
+        Log.d("aaaa", "compressImage: " + file);
+        // recycleBitmap(bitmap);
+        return file;
+    }
+
 }

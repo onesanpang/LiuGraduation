@@ -4,12 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@color/graybackground"
     android:layout_height="match_parent"
     tools:context=".LogonActivity">
 
     <EditText
         android:id="@+id/logon_edit_mail"
         android:hint="请输入账号"
+        android:padding="5dp"
+        android:inputType="textEmailAddress"
         android:textSize="15dp"
         android:background="@drawable/linear_background"
         android:layout_marginTop="40dp"
@@ -18,6 +22,9 @@
     <EditText
         android:id="@+id/logon_edit_password"
         android:hint="请输入密码"
+        android:padding="5dp"
+        android:inputType="textPassword"
+        android:layout_marginTop="5dp"
         android:background="@drawable/linear_background"
         android:layout_width="match_parent"
         android:textSize="15dp"
@@ -25,11 +32,15 @@
     <Button
         android:id="@+id/mian_logon_button"
         android:text="登陆"
+        android:background="@drawable/buttonpractice_background"
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="40dp" />
     <Button
         android:id="@+id/main_register_button"
         android:text="注册"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/buttonpractice_background"
         android:layout_width="match_parent"
         android:layout_height="40dp" />
 </LinearLayout>

@@ -3,14 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".UserIdentityActivity">
 
+    <View
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"/>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_marginTop="35dp"
+        android:background="#ffffff"
         android:gravity="center_vertical"
         android:layout_height="30dp">
         <ImageView
@@ -21,7 +25,6 @@
             android:layout_height="25dp" />
 
         <TextView
-            android:id="@+id/userinfo_text_title"
             android:textSize="19dp"
             android:textColor="#000000"
             android:gravity="center"
@@ -29,16 +32,61 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent" />
-
+        <TextView
+            android:id="@+id/useridentity_text_save"
+            android:text="保存"
+            android:textColor="#000000"
+            android:textSize="15dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <TextView
-        android:textColor="#000000"
-        android:textSize="25dp"
-        android:padding="10dp"
-        android:text="您的身份是"
-        android:layout_marginTop="10dp"
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="您的身份是"
+            android:textColor="#000000"
+            android:textSize="25dp" />
 
+        <RadioGroup
+            android:id="@+id/useridentity_radiogroup"
+            android:orientation="horizontal"
+            android:layout_marginTop="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/useridentity_parent_but"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="家长" />
+
+            <RadioButton
+                android:id="@+id/useridentity_teacher_but"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="老师" />
+
+        </RadioGroup>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="您的年级是"
+            android:textColor="#000000"
+            android:textSize="25dp" />
+        <ListView
+            android:id="@+id/useridentity_listview_grade"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </ListView>
+    </LinearLayout>
 </LinearLayout>

@@ -2,6 +2,7 @@ package com.example.graduation;
 
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
@@ -38,8 +39,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private Button butGetCode, butRegist;
     private RadioGroup radioGroup;
     private RadioButton butParent, butTeacher;
-    private SharedPreferences sp;
-    private SharedPreferences.Editor editor;
     private String sendMailUrl = "http://47.106.112.29:8080/user/sendMail";
     private String registerUrl = "http://47.106.112.29:8080/user/register";
 
@@ -77,8 +76,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         butGetCode.setOnClickListener(this);
         butRegist.setOnClickListener(this);
 
-        sp = getSharedPreferences("user",MODE_PRIVATE);
-        editor = sp.edit();
 
         //对RadioGroup进行监听
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -87,13 +84,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 if (checkedId == R.id.register_parent_but) {
                     //Toast.makeText(RegisterActivity.this, butParent.getText(), Toast.LENGTH_SHORT).show();
                     identity = 1;
-                    editor.putString("identity","1");
-                    editor.commit();
                 } else if (checkedId == R.id.register_teacher_but) {
                     //Toast.makeText(RegisterActivity.this, butTeacher.getText(), Toast.LENGTH_SHORT).show();
                     identity = 2;
-                    editor.putString("identity","2");
-                    editor.commit();
                 }
             }
         });
@@ -216,7 +209,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         @Override
         public void onTick(long millisUntilFinished) {
             //改变button的颜色
-            butGetCode.setBackgroundColor(Color.parseColor("#9999CC"));
+
+            butGetCode.setBackgroundDrawable(setButtonBackground("1"));
             //设置不让button再次点击
             butGetCode.setClickable(false);
             //在button上面显示时间
@@ -229,7 +223,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             butGetCode.setText("再次获取");
             //可再次点击
             butGetCode.setClickable(true);
-            butGetCode.setBackgroundColor(Color.parseColor("#0099FF"));
+            butGetCode.setBackgroundDrawable(setButtonBackground("2"));
         }
+    }
+
+    private GradientDrawable setButtonBackground(String type){
+        GradientDrawable drawable = new GradientDrawable();
+        drawable.setGradientRadius(10);
+        if (type.equals("1")){
+            drawable.setColor(Color.parseColor("#ACEBF3"));
+        }else{
+            drawable.setColor(Color.parseColor("#48E3FA"));
+        }
+        return drawable;
     }
 }

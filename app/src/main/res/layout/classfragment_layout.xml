@@ -1,100 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/graybackground"
+    android:orientation="vertical">
+
     <View
+        android:background="#ffffff"
         android:layout_width="match_parent"
-        android:layout_height="20dp"/>
+        android:layout_height="20dp" />
+
     <LinearLayout
-        android:padding="10dp"
+        android:background="#ffffff"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
         <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="班级"
             android:textColor="#000000"
             android:textSize="30dp"
-            android:textStyle="bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-    <LinearLayout
-        android:visibility="gone"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
-            android:padding="10dp"
-            android:orientation="horizontal"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:src="@drawable/ic_launcher_background"
-                android:layout_width="30dp"
-                android:layout_height="30dp" />
+            android:textStyle="bold" />
 
-            <LinearLayout
-                android:layout_marginLeft="10dp"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:text="布置线上练习"
-                    android:textColor="#000000"
-                    android:textSize="15dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:text="统一出题·手机作答"
-                    android:layout_width="wrap_content"
-                    android:textSize="10dp"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-        </LinearLayout>
         <LinearLayout
-            android:padding="10dp"
-            android:orientation="horizontal"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content">
+            android:id="@+id/class_linear_myclass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
             <ImageView
-                android:src="@drawable/ic_launcher_background"
                 android:layout_width="30dp"
-                android:layout_height="30dp" />
-
-            <LinearLayout
-                android:layout_marginLeft="10dp"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:text="布置纸质练习"
-                    android:textColor="#000000"
-                    android:textSize="15dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:text="拍照提交·自动批改"
-                    android:layout_width="wrap_content"
-                    android:textSize="10dp"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                android:layout_height="30dp"
+                android:src="@mipmap/myclass" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="我的的班级"
+                android:textSize="10dp" />
         </LinearLayout>
     </LinearLayout>
-
     <LinearLayout
+        android:id="@+id/class_linear_work"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
+        android:padding="10dp"
+        android:background="#ffffff"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_launcher_background" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="布置纸质练习"
+                android:textColor="#000000"
+                android:textSize="15dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="拍照提交·自动批改"
+                android:textSize="10dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:id="@+id/class_linear_button"
         android:layout_marginTop="20dp"
-        android:layout_height="40dp">
+        android:visibility="visible"
+        android:gravity="center">
         <Button
             android:id="@+id/class_button"
-            android:textColor="#000000"
-            android:background="@drawable/buttonpractice_background"
-            android:textSize="15dp"
-            android:text="老师创建班级"
             android:layout_width="200dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="@drawable/buttonpractice_background"
+            android:text="老师创建班级"
+            android:textColor="#000000"
+            android:textSize="15dp" />
     </LinearLayout>
 
 </LinearLayout>

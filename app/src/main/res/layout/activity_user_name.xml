@@ -4,13 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:background="@color/graybackground"
     android:layout_height="match_parent"
     tools:context=".UserNameActivity">
 
+    <View
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"/>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_marginTop="35dp"
+        android:background="#ffffff"
         android:gravity="center_vertical"
         android:layout_height="30dp">
         <ImageView
@@ -30,6 +35,7 @@
             android:layout_weight="1"
             android:layout_height="match_parent" />
         <TextView
+            android:id="@+id/username_text_save"
             android:text="保存"
             android:textColor="#000000"
             android:textSize="15dp"
@@ -39,7 +45,9 @@
     </LinearLayout>
     <LinearLayout
         android:padding="10dp"
+        android:background="#ffffff"
         android:orientation="horizontal"
+        android:layout_marginTop="10dp"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="40dp">
@@ -50,7 +58,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <EditText
+            android:id="@+id/username_edit_name"
+            android:padding="5dp"
             android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
             android:background="@color/transparent"
             android:layout_width="match_parent"
             android:layout_height="30dp" />

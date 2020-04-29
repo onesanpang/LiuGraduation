@@ -4,12 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
+    android:padding="25dp"
+    android:background="@color/graybackground"
     android:orientation="vertical"
     tools:context=".RegisterActivity">
 
     <EditText
         android:layout_marginTop="30dp"
+        android:background="@drawable/linear_background"
+        android:padding="5dp"
+        android:textSize="13dp"
+        android:inputType="textEmailAddress"
         android:id="@+id/register_edit_mail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,12 +23,22 @@
     <EditText
         android:id="@+id/register_edit_password"
         android:layout_width="match_parent"
+        android:background="@drawable/linear_background"
+        android:padding="5dp"
+        android:inputType="textPassword"
+        android:textSize="13dp"
+        android:layout_marginTop="5dp"
         android:layout_height="wrap_content"
         android:hint="请输入密码" />
 
     <EditText
         android:id="@+id/register_edit_passwordtwo"
         android:layout_width="match_parent"
+        android:background="@drawable/linear_background"
+        android:padding="5dp"
+        android:textSize="13dp"
+        android:inputType="textPassword"
+        android:layout_marginTop="5dp"
         android:layout_height="wrap_content"
         android:hint="请再次输入密码" />
 
@@ -35,23 +50,31 @@
             android:id="@+id/register_edit_code"
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:textSize="13dp"
+            android:background="@drawable/linear_background"
+            android:padding="5dp"
             android:layout_height="wrap_content"
             android:hint="请输入验证码" />
         <Button
             android:id="@+id/register_but_getcode"
             android:text="获取验证码"
             android:layout_width="0dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/butgetcode_back_click"
             android:layout_weight="1"
-            android:layout_height="wrap_content" />
+            android:textColor="#ffffff"
+            android:layout_height="40dp" />
     </LinearLayout>
 
     <TextView
         android:text="请选择您的身份"
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <RadioGroup
         android:id="@+id/register_radiogroup"
         android:orientation="horizontal"
+        android:layout_marginTop="3dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -72,6 +95,8 @@
     <Button
         android:id="@+id/register_but_regist"
         android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/buttonpractice_background"
         android:layout_height="wrap_content"
         android:text="注册" />
 

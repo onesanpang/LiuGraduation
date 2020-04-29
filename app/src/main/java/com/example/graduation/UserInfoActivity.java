@@ -1,16 +1,8 @@
 package com.example.graduation;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -18,7 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,62 +19,98 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.bumptech.glide.Glide;
+import com.example.graduation.java.BitmaptoFiles;
+import com.example.graduation.java.HttpUtil;
 import com.example.graduation.java.StatusBarTransparent;
+
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class UserInfoActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private LinearLayout linearIcon,linearName,linearIdentity,linearSchool;
+    private LinearLayout linearIcon, linearName, linearIdentity, linearSchool;
     private Dialog dialog;
     private TextView textMail;
     private SharedPreferences sp;
     private TextView bottomPhoto, bottomGallery, bottomCancel;
     private Intent intent;
     private Uri imageUri;
-    private final int REQUEST_PERMISSIONS = 1;
     private final int CAMERA_RESULT_CODE = 2;
     private final int REQUEST_CODE_PICK_IMAGE = 3;
     private ImageView imageBack;
+    private final String url = "http://47.106.112.29:8080//user/uploadIcon";//上传的url
+    private String uid;
+    private String userInfoUrl = "http://47.106.112.29:8080/user/getUser";
+    private ImageView imageIcon;
+    private TextView textName,textGrade;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
 
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
             StatusBarTransparent.makeStatusBarTransparent(this);
         }
         initView();
-        initPermission();
+        getUserInfo(userInfoUrl);
     }
 
-    private void initView(){
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        getUserInfo(userInfoUrl);
+    }
+
+    private void initView() {
         linearIcon = findViewById(R.id.userinfo_linear_icon);
         linearName = findViewById(R.id.userinfo_linear_name);
         linearIdentity = findViewById(R.id.userinfo_linear_identity);
-        linearSchool = findViewById(R.id.userinfo_linear_school);
+//        linearSchool = findViewById(R.id.userinfo_linear_school);
         textMail = findViewById(R.id.userinfo_text_mail);
         imageBack = findViewById(R.id.userinfo_image_back);
+        imageIcon = findViewById(R.id.userinfo_image_icon);
+        textName = findViewById(R.id.userinfo_text_name);
+        textGrade = findViewById(R.id.userinfo_text_grade);
 
         linearIcon.setOnClickListener(this);
         linearName.setOnClickListener(this);
         linearIdentity.setOnClickListener(this);
-        linearSchool.setOnClickListener(this);
         imageBack.setOnClickListener(this);
 
-        sp = getSharedPreferences("user",MODE_PRIVATE);
-        String mail = sp.getString("email","");
+        sp = getSharedPreferences("user", MODE_PRIVATE);
+        String mail = sp.getString("email", "");
+        uid = sp.getString("uid","");
         textMail.setText(mail);
         textMail.setTextColor(Color.parseColor("#000000"));
     }
 
+
+
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
+        switch (v.getId()) {
             case R.id.userinfo_linear_icon:
                 showBottomDialog();
                 break;
@@ -98,15 +126,14 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                 dialog.dismiss();
                 break;
             case R.id.userinfo_linear_name:
-                startActivity(new Intent(UserInfoActivity.this,UserNameActivity.class));
+                startActivity(new Intent(UserInfoActivity.this, UserNameActivity.class));
                 break;
             case R.id.userinfo_image_back:
                 finish();
                 break;
             case R.id.userinfo_linear_identity:
-                startActivity(new Intent(UserInfoActivity.this,UserIdentityActivity.class));
-            case R.id.userinfo_linear_school:
-                startActivity(new Intent(UserInfoActivity.this,SearchSchoolActivity.class));
+                startActivity(new Intent(UserInfoActivity.this, UserIdentityActivity.class));
+                break;
         }
     }
 
@@ -130,35 +157,6 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         dialog.show();
     }
 
-    private void initPermission() {
-        String[] permissions = new String[]{Manifest.permission.CAMERA,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE};
-        //检查权限
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            // 之前拒绝了权限，但没有点击 不再询问 这个时候让它继续请求权限
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.CAMERA)) {
-                ActivityCompat.requestPermissions(this, permissions, REQUEST_PERMISSIONS);
-            } else {
-                //注册相机权限
-                ActivityCompat.requestPermissions(this, permissions, REQUEST_PERMISSIONS);
-            }
-        }
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case REQUEST_PERMISSIONS:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                } else {
-                    Toast.makeText(this, "拒绝", Toast.LENGTH_SHORT).show();
-                }
-                break;
-        }
-    }
 
     private void openSysCamera() {
         //最后一个参数是文件夹的名称，可以随便起
@@ -181,15 +179,16 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         } catch (Exception e) {
             e.printStackTrace();
         }
-        imageUri  = Uri.fromFile(output);
+        imageUri = Uri.fromFile(output);
         intent = new Intent("android.media.action.IMAGE_CAPTURE");
-        intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
         startActivityForResult(intent, CAMERA_RESULT_CODE);
     }
-    private void openGallery(){
+
+    private void openGallery() {
         intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
-        startActivityForResult(intent,REQUEST_CODE_PICK_IMAGE);
+        startActivityForResult(intent, REQUEST_CODE_PICK_IMAGE);
     }
 
     @Override
@@ -214,12 +213,88 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                     Bitmap bit = null;
                     try {
                         bit = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(uri));
+                        loadImage(BitmaptoFiles.compressImage(bit), url);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
-
                 }
                 break;
         }
     }
+
+    private void loadImage(final File file, final String url) {
+        final String uid = sp.getString("uid", "");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    OkHttpClient client = new OkHttpClient();
+                    //创建RequestBody
+                    RequestBody fileBody = RequestBody.create(MediaType.parse("image/png"), file);
+                    //构建MultipartBody
+                    RequestBody requestBody = new MultipartBody.Builder()
+                            .setType(MultipartBody.FORM)
+                            .addFormDataPart("file", "testImage.png", fileBody)
+                            .addFormDataPart("id", uid)
+                            .build();
+                    Request request = new Request.Builder()
+                            .url(url)
+                            .post(requestBody)
+                            .build();
+                    Response response = client.newCall(request).execute();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
+    }
+
+    private void getUserInfo(String url){
+        RequestBody body = new FormBody.Builder()
+                .add("id",uid)
+                .build();
+        HttpUtil.sendJsonOkhttpRequest(url, body, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Log.e("response","error");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.body().toString() != null){
+                    try {
+                        JSONObject object = new JSONObject(response.body().string());
+                        if (object.has("ec")){
+                            if (object.optInt("ec") == RegisterActivity.SUCCESS){
+                                final JSONObject data = object.optJSONObject("data");
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        textName.setText(data.optString("nickName"));
+                                        String s;
+                                        if (data.optInt("identity") ==1){
+                                            s = "家长";
+                                        }else{
+                                            s = "老师";
+                                        }
+                                        if (data.optString("grade") == null){
+                                            textGrade.setText("未填写 ");
+                                        }else{
+                                            textGrade.setText((data.optString("grade")+"年级")+s);
+                                        }
+                                        Glide.with(UserInfoActivity.this).load("http://47.106.112.29:8080/"+data.optString("uicon")).into(imageIcon);
+                                    }
+                                });
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
 }
