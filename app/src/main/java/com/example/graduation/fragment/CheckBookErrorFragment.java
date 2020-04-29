@@ -66,7 +66,7 @@ public class CheckBookErrorFragment extends Fragment {
                 try {
                     JSONObject object = new JSONObject(response.body().string());
                     if (object.optInt("ec") == 200){
-                        JSONArray jsonArray = 
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
