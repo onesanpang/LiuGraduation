@@ -49,7 +49,7 @@ public class PracticesItemAdapter extends BaseAdapter {
         if (convertView == null) {
             mViewHolder = new ViewHolder();
             convertView = mLayoutInflater.inflate(R.layout.practiceslistview_item, null);
-            mViewHolder.mTextView = (TextView) convertView.findViewById(R.id.practicesitem_text1);
+            //mViewHolder.mTextView = (TextView) convertView.findViewById(R.id.practicesitem_text1);
             mViewHolder.mEditText = (EditText) convertView.findViewById(R.id.practicesitem_text2);
             mViewHolder.mEditText.setOnTouchListener(new View.OnTouchListener() {
                 @Override

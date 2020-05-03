@@ -66,7 +66,7 @@ public class PracticeFragment extends Fragment implements View.OnClickListener {
     private void sendSize(String url){
         RequestBody body = new FormBody.Builder()
                 .add("id",uid)
-                .add("size","10")
+                .add("size",editSize.getText().toString())
                 .build();
         HttpUtil.sendJsonOkhttpRequest(url, body, new Callback() {
             @Override

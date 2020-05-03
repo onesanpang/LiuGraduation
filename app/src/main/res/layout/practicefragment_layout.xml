@@ -60,7 +60,6 @@
             <EditText
                 android:id="@+id/practicefragment_edit_size"
                 android:background="@drawable/textview_background"
-                android:text="10"
                 android:paddingLeft="10dp"
                 android:gravity="center_vertical"
                 android:textSize="14dp"

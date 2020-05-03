@@ -38,6 +38,8 @@ public class PhoneResultsActivity extends AppCompatActivity {
     private TextView textRight,textError;
     private ListView listView;
     private int id;
+    private int checkId;
+    private int practiceId;
     private List<CheckHistory> checkHistoryList;
 
     @Override
@@ -69,7 +71,14 @@ public class PhoneResultsActivity extends AppCompatActivity {
         checkHistoryList = new ArrayList<>();
 
         Bundle bundle=getIntent().getExtras();
-        id= bundle.getInt("checkresult");
+        checkId= bundle.getInt("checkresult");
+        practiceId = bundle.getInt("practiceresult");
+        if (checkId != 0){
+            id = checkId;
+        }else if (practiceId != 0){
+            id = practiceId;
+        }
+
         Log.e("resultid", String.valueOf(id));
     }
 
@@ -119,7 +128,7 @@ public class PhoneResultsActivity extends AppCompatActivity {
         });
     }
 
-    class Adapter extends BaseAdapter{
+    public static class Adapter extends BaseAdapter{
         List<CheckHistory> list;
         Context context;
         public Adapter(Context context,List<CheckHistory> list){
@@ -159,7 +168,7 @@ public class PhoneResultsActivity extends AppCompatActivity {
         }
     }
 
-    class CheckHistory{
+    public static class CheckHistory{
        private boolean isCorrect;
        private String sourceStr;
        private String targetStr;
