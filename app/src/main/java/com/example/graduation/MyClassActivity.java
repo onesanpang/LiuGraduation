@@ -28,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,10 +43,12 @@ public class MyClassActivity extends AppCompatActivity implements View.OnClickLi
     private SharedPreferences sp;
     private String uid;
     private String myClass = "http://47.106.112.29:8080/class/getAllClass";
+    private String dissolveClassUrl = "http://47.106.112.29:8080/class/dissolveClass";
     private ListView listView;
     private TextView textAddClass;
     private ImageView imageBack;
     private List<MyClass> myClassLists;
+    private Adapter adapter;
 
 
     @Override
@@ -78,12 +81,13 @@ public class MyClassActivity extends AppCompatActivity implements View.OnClickLi
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MyClassActivity.this, "点击了item", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MyClassActivity.this,MyCLassStudentActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("class",myClassLists.get(position));
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
-
-
-
     }
 
     private void getClassInfo(String url){
@@ -112,16 +116,16 @@ public class MyClassActivity extends AppCompatActivity implements View.OnClickLi
                                     myClassLists.add(myClass);
                                 }
 
-                                Adapter adapter = new Adapter(MyClassActivity.this,myClassLists);
+                                adapter = new Adapter(MyClassActivity.this,myClassLists);
                                 listView.setAdapter(adapter);
 
                                 adapter.setOnItemMoreClickListener(new Adapter.onItemMoreListener() {
                                     @Override
                                     public void onMoreClick(int i) {
-                                        Toast.makeText(MyClassActivity.this, "点击了删除", Toast.LENGTH_SHORT).show();
+                                        String position = myClassLists.get(i).getCcnumber();
+                                        dissolveClass(dissolveClassUrl, position,i);
                                     }
                                 });
-
                             }
                         });
                     }
@@ -144,7 +148,7 @@ public class MyClassActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    class MyClass{
+    static class MyClass implements Serializable {
         String school;
         String grade;
         int createId;
@@ -178,6 +182,52 @@ public class MyClassActivity extends AppCompatActivity implements View.OnClickLi
         public int getMnumber() {
             return mnumber;
         }
+    }
+
+    private void dissolveClass(String url,String number,final int i){
+        RequestBody body = new FormBody.Builder()
+                .add("classNumber",number)
+                .add("uid",uid)
+                .build();
+        HttpUtil.sendJsonOkhttpRequest(url, body, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try {
+                    JSONObject object = new JSONObject(response.body().string());
+                    if (object.optInt("ec") == 200){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                myClassLists.remove(i);
+                                adapter.notifyDataSetChanged();
+                                Toast.makeText(MyClassActivity.this, "解散班级成功", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        getClassInfo(myClass);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        myClassLists.clear();
+        adapter.notifyDataSetChanged();
     }
 
     static class Adapter extends BaseAdapter{

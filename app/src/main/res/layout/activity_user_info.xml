@@ -4,15 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:background="@color/graybackground"
     android:layout_height="match_parent"
     tools:context=".UserInfoActivity">
 
+    <View
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"/>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_marginTop="35dp"
+        android:background="#ffffff"
+        android:padding="5dp"
         android:gravity="center_vertical"
-        android:layout_height="30dp">
+        android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/userinfo_image_back"
             android:layout_marginLeft="2dp"
@@ -28,13 +34,15 @@
             android:text="个人信息"
             android:paddingRight="25dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/userinfo_linear_icon"
         android:padding="10dp"
         android:gravity="center"
+        android:background="#ffffff"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="50dp">
         <TextView
@@ -51,16 +59,11 @@
             android:layout_height="wrap_content" />
 
     </LinearLayout>
-    <View
-        android:background="#E7E7E7"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"/>
-
     <LinearLayout
         android:id="@+id/userinfo_linear_name"
         android:padding="10dp"
+        android:background="#ffffff"
+        android:layout_marginTop="3dp"
         android:layout_width="match_parent"
         android:layout_height="40dp">
         <TextView
@@ -82,6 +85,7 @@
         android:id="@+id/userinfo_linear_identity"
         android:padding="10dp"
         android:layout_marginTop="10dp"
+        android:background="#ffffff"
         android:layout_width="match_parent"
         android:layout_height="40dp">
         <TextView
@@ -98,12 +102,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
-    <View
-        android:background="#E7E7E7"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"/>
     <!--<LinearLayout-->
         <!--android:id="@+id/userinfo_linear_school"-->
         <!--android:padding="10dp"-->
@@ -125,6 +123,7 @@
     <LinearLayout
         android:padding="10dp"
         android:layout_marginTop="10dp"
+        android:background="#ffffff"
         android:layout_width="match_parent"
         android:layout_height="40dp">
         <TextView

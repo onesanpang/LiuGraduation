@@ -8,7 +8,7 @@
         android:id="@+id/checkhistoryfragment_listview"
         android:layout_width="match_parent"
         android:divider="@color/transparent"
-        android:dividerHeight="30dp"
+        android:dividerHeight="20dp"
         android:layout_height="match_parent">
     </ListView>
 </LinearLayout>

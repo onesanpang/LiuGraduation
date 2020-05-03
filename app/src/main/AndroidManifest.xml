@@ -14,7 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CheckHistoryActivity"></activity>
+        <activity android:name=".MyCLassStudentActivity"></activity>
+        <activity android:name=".AddHomeWorkActivity" />
+        <activity android:name=".SelectClassActivity" />
+        <activity android:name=".CheckHistoryActivity" />
         <activity android:name=".ErrorBookActivity" />
         <activity android:name=".PracticesActivity" />
         <activity android:name=".MyClassActivity" />
