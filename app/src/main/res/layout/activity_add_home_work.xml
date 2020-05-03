@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/graybackground"
+    android:orientation="vertical"
+    tools:context=".AddHomeWorkActivity">
+
+    <View
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"/>
+    <LinearLayout
+        android:padding="5dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:background="#ffffff"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/addhomework_image_back"
+            android:layout_marginLeft="10dp"
+            android:src="@mipmap/back"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+
+        <TextView
+            android:textSize="19dp"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:text="练习内容"
+            android:paddingRight="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <TextView
+            android:text="已选班级"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp" />
+        <TextView
+            android:id="@+id/addhomework_text_classname"
+            android:gravity="center_vertical"
+            android:background="#ffffff"
+            android:text="一年级"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
+        <TextView
+            android:text="练习内容"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:padding="10dp"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp" />
+        <EditText
+            android:id="@+id/addhomework_edit_workinfo"
+            android:layout_width="fill_parent"
+            android:layout_height="80dp"
+            android:enabled="true"
+            android:paddingLeft="10dp"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:minLines="8"
+            android:background="#ffffff"
+            android:maxLines="10"
+            android:scrollbars="vertical"/>
+
+        <TextView
+            android:text="添加图片（选填）"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:paddingLeft="10dp"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp" />
+        <LinearLayout
+            android:background="#ffffff"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="70dp">
+            <ImageView
+                android:id="@+id/addhomework_image_addimage"
+                android:layout_marginLeft="10dp"
+                android:src="@mipmap/addimage"
+                android:layout_width="60dp"
+                android:layout_height="60dp" />
+        </LinearLayout>
+    </LinearLayout>
+    <Button
+        android:id="@+id/addhomework_buttton"
+        android:text="确认发布"
+        android:layout_width="match_parent"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/buttonpractice_background"
+        android:layout_height="wrap_content" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="15dp"/>
+</LinearLayout>

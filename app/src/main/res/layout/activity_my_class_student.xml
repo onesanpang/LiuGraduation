@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MyCLassStudentActivity">
+
+    <View
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:background="#ffffff"
+        android:gravity="center_vertical"
+        android:layout_height="30dp">
+        <ImageView
+            android:id="@+id/myclassstudent_image_back"
+            android:layout_marginLeft="10dp"
+            android:src="@mipmap/back"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+
+        <TextView
+            android:id="@+id/myclassstudent_text_grade"
+            android:textSize="19dp"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:text="一年级"
+            android:paddingRight="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <ListView
+        android:id="@+id/myclassstudent_listview"
+        android:layout_width="match_parent"
+        android:divider="@color/transparent"
+        android:dividerHeight="5dp"
+        android:layout_weight="1"
+        android:layout_height="0dp">
+    </ListView>
+    <Button
+        android:id="@+id/myclassstudent_buttton"
+        android:text="设置练习内容"
+        android:layout_width="match_parent"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:visibility="gone"
+        android:background="@drawable/buttonpractice_background"
+        android:layout_height="wrap_content" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="15dp"/>
+    <TextView
+        android:id="@+id/myclassstudent_text_bottom"
+        android:text="暂时没有学生~"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
+</LinearLayout>
