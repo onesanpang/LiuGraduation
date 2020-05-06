@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,21 +43,27 @@ public class MyFragment extends Fragment implements View.OnClickListener {
     private String uid;
     private String userInfoUrl = "http://47.106.112.29:8080/user/getUser";
     private String imageUrl = "http://img0.imgtn.bdimg.com/it/u=2222611632,3911399686&fm=26&gp=0.jpg";
-    private ImageView imageBackground,imageIcon;
-    private LinearLayout linearError,linearStudy,exitLogon;
+    private ImageView imageBackground, imageIcon;
+    private LinearLayout linearError, linearStudy, exitLogon;
 
-    private TextView textName,textGrade;
+    private TextView textName, textGrade;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.myfragment_layout,container,false);
+        View view = inflater.inflate(R.layout.myfragment_layout, container, false);
 
         initView(view);
-        getUserInfo(userInfoUrl);
         return view;
     }
 
-    private void initView(View view){
+    @Override
+    public void onResume() {
+        super.onResume();
+        getUserInfo(userInfoUrl);
+    }
+
+    private void initView(View view) {
 
         imageBackground = view.findViewById(R.id.myfragment_image_mybackground);
         textName = view.findViewById(R.id.myfragment_text_name);
@@ -71,35 +78,25 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         linearStudy.setOnClickListener(this);
 
         sp = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
-        uid = sp.getString("uid","");
+        uid = sp.getString("uid", "");
 
         //添加背景图片
         Glide.with(getContext()).load(imageUrl).into(imageBackground);
-
-
-        exitLogon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        Log.e("nickName",sp.getString("nickName",""));
-
     }
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
+        switch (v.getId()) {
             case R.id.myfragment_text_grade:
-                startActivity(new Intent(getActivity(),UserInfoActivity.class));
+                startActivity(new Intent(getActivity(), UserInfoActivity.class));
                 break;
             case R.id.myfragment_image_icon:
                 startActivity(new Intent(getActivity(), UserInfoActivity.class));
                 break;
             case R.id.myfragment_linear_exit:
-                startActivity(new Intent(getActivity(), LogonActivity.class));
-                getActivity().finish();
+                //清空栈内所有的Activity
+                Intent intent=new Intent(getActivity(),LogonActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
                 break;
             case R.id.myfragment_linear_errorbook:
                 startActivity(new Intent(getActivity(), ErrorBookActivity.class));
@@ -110,34 +107,39 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void getUserInfo(String url){
+    private void getUserInfo(String url) {
         RequestBody body = new FormBody.Builder()
-                .add("id",uid)
+                .add("id", uid)
                 .build();
         HttpUtil.sendJsonOkhttpRequest(url, body, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Log.e("response","error");
+                Log.e("response", "error");
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if (response.body().toString() != null){
+                if (response.body().toString() != null) {
                     try {
                         JSONObject object = new JSONObject(response.body().string());
-                        if (object.has("ec")){
-                            if (object.optInt("ec") == RegisterActivity.SUCCESS){
-                               final JSONObject data = object.optJSONObject("data");
+                        if (object.has("ec")) {
+                            if (object.optInt("ec") == RegisterActivity.SUCCESS) {
+                                final JSONObject data = object.optJSONObject("data");
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
                                         textName.setText(data.optString("nickName"));
-                                        if (data.optString("grade") == null){
+
+                                        if (data.optString("grade").equals("null") || TextUtils.isEmpty(data.optString("grade"))) {
                                             textGrade.setText("添加年级 + ");
-                                        }else{
-                                            textGrade.setText((data.optString("grade")+"年级"));
+                                        } else {
+                                            textGrade.setText((data.optString("grade") + "年级"));
                                         }
-                                        Glide.with(getContext()).load("http://47.106.112.29:8080/"+data.optString("uicon")).into(imageIcon);
+                                        if (!data.optString("uicon").equals("null")) {
+                                            if (!data.optString("uicon").equals("null")) {
+                                                Glide.with(getContext()).load("http://47.106.112.29:8080/" + data.optString("uicon")).into(imageIcon);
+                                            }
+                                        }
                                     }
                                 });
                             }
