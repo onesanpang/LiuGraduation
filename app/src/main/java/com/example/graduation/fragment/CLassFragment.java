@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.example.graduation.AddHomeWorkActivity;
 import com.example.graduation.MyClassActivity;
+import com.example.graduation.ParentActivity;
 import com.example.graduation.R;
 import com.example.graduation.SelectClassActivity;
 import com.example.graduation.TeacherActivity;
@@ -47,9 +48,11 @@ public class CLassFragment extends Fragment implements View.OnClickListener {
     private SharedPreferences sp;
     private String uid;
     private String myclass;
+    private String addclass;
     private String identity = "";
     private Button button;
     private LinearLayout linearMyClass,linearWork,linearButton,linearShowWork;
+    private LinearLayout linearAddClass;
     private ListView listView;
     private List<Work> workLists;
     private String getHomeWorkUrl = "http://47.106.112.29:8080/class/work/getHomeWork";
@@ -71,13 +74,16 @@ public class CLassFragment extends Fragment implements View.OnClickListener {
         linearWork = view.findViewById(R.id.class_linear_work);
         linearButton = view.findViewById(R.id.class_linear_button);
         linearShowWork = view.findViewById(R.id.class_linear_showwork);
-
+        linearAddClass = view.findViewById(R.id.class_linear_addclass);
+        listView = view.findViewById(R.id.class_listview);
         linearMyClass.setOnClickListener(this);
+        linearAddClass.setOnClickListener(this);
         linearWork.setOnClickListener(this);
         linearButton.setOnClickListener(this);
 
         sp = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
         identity = sp.getString("identity","");
+        Log.e("class身份",identity);
         uid = sp.getString("uid","");
 
         if (identity.equals("2")){
@@ -91,8 +97,14 @@ public class CLassFragment extends Fragment implements View.OnClickListener {
             });
         }else if (identity.equals("1")){
             button.setText("家长加入班级");
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(new Intent(getActivity(), ParentActivity.class)));
+                }
+            });
         }
-
+        //老师创建班级之后的界面显示
         myclass = sp.getString("myclass","");
         if (myclass.equals("yes")){
             linearMyClass.setVisibility(View.VISIBLE);
@@ -101,9 +113,24 @@ public class CLassFragment extends Fragment implements View.OnClickListener {
             linearShowWork.setVisibility(View.VISIBLE);
 
         }
+        //家长加入班级之后的界面显示
+        addclass = sp.getString("addclass","");
+        if (addclass.equals("yes")){
+            linearButton.setVisibility(View.GONE);
+            linearAddClass.setVisibility(View.VISIBLE);
+            linearShowWork.setVisibility(View.VISIBLE);
+        }
 
         if (linearMyClass.getVisibility() == View.VISIBLE){
             linearMyClass.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getActivity(), MyClassActivity.class));
+                }
+            });
+        }
+        if (linearAddClass.getVisibility() == View.VISIBLE){
+            linearAddClass.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     startActivity(new Intent(getActivity(), MyClassActivity.class));
@@ -118,15 +145,20 @@ public class CLassFragment extends Fragment implements View.OnClickListener {
                 }
             });
         }
+
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
         if (linearShowWork.getVisibility() ==View.VISIBLE){
-            listView = view.findViewById(R.id.class_listview);
             workLists = new ArrayList<>();
             getWork(getHomeWorkUrl);
 
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 }
             });
         }
@@ -141,6 +173,12 @@ public class CLassFragment extends Fragment implements View.OnClickListener {
             linearWork.setVisibility(View.VISIBLE);
             linearButton.setVisibility(View.GONE);
         }
+        addclass = sp.getString("addclass","");
+        if (addclass.equals("yes")){
+            linearButton.setVisibility(View.GONE);
+            linearAddClass.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override

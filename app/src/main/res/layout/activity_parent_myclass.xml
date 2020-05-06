@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/graybackground"
+    android:orientation="vertical"
+    tools:context=".ParentMyclassActivity">
+    <View
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"/>
+    <LinearLayout
+        android:background="#ffffff"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:padding="5dp"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/parentmyclass_image_back"
+            android:layout_marginLeft="2dp"
+            android:src="@mipmap/back"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+        <TextView
+            android:textSize="19dp"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:text="我的班级"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/parentmyclass_text_addclass"
+            android:text="加入新班级"
+            android:textColor="#5A5A5A"
+            android:textSize="14dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ListView
+            android:id="@+id/parentmyclass_listview"
+            android:layout_width="match_parent"
+            android:divider="@color/transparent"
+            android:dividerHeight="10dp"
+            android:layout_height="wrap_content">
+        </ListView>
+    </LinearLayout>
+</LinearLayout>

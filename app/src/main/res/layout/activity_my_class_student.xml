@@ -44,7 +44,7 @@
     </ListView>
     <Button
         android:id="@+id/myclassstudent_buttton"
-        android:text="设置练习内容"
+        android:text="移出学生"
         android:layout_width="match_parent"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"

@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -62,7 +63,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
     private String uid;
     private String userInfoUrl = "http://47.106.112.29:8080/user/getUser";
     private ImageView imageIcon;
-    private TextView textName,textGrade;
+    private TextView textName, textGrade;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,12 +75,11 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
             StatusBarTransparent.makeStatusBarTransparent(this);
         }
         initView();
-        getUserInfo(userInfoUrl);
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
+    protected void onResume() {
+        super.onResume();
         getUserInfo(userInfoUrl);
     }
 
@@ -101,11 +101,10 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
 
         sp = getSharedPreferences("user", MODE_PRIVATE);
         String mail = sp.getString("email", "");
-        uid = sp.getString("uid","");
+        uid = sp.getString("uid", "");
         textMail.setText(mail);
         textMail.setTextColor(Color.parseColor("#000000"));
     }
-
 
 
     @Override
@@ -200,6 +199,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                     Bitmap bit = null;
                     try {
                         bit = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(imageUri));
+                        loadImage(BitmaptoFiles.compressImage(bit), url);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -251,40 +251,42 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         }).start();
     }
 
-    private void getUserInfo(String url){
+    private void getUserInfo(String url) {
         RequestBody body = new FormBody.Builder()
-                .add("id",uid)
+                .add("id", uid)
                 .build();
         HttpUtil.sendJsonOkhttpRequest(url, body, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Log.e("response","error");
+                Log.e("response", "error");
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if (response.body().toString() != null){
+                if (response.body().toString() != null) {
                     try {
                         JSONObject object = new JSONObject(response.body().string());
-                        if (object.has("ec")){
-                            if (object.optInt("ec") == RegisterActivity.SUCCESS){
+                        if (object.has("ec")) {
+                            if (object.optInt("ec") == RegisterActivity.SUCCESS) {
                                 final JSONObject data = object.optJSONObject("data");
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
                                         textName.setText(data.optString("nickName"));
                                         String s;
-                                        if (data.optInt("identity") ==1){
+                                        if (data.optInt("identity") == 1) {
                                             s = "家长";
-                                        }else{
+                                        } else {
                                             s = "老师";
                                         }
-                                        if (data.optString("grade") == null){
+                                        if (data.optString("grade").equals(" null") || TextUtils.isEmpty(data.optString("grade"))) {
                                             textGrade.setText("未填写 ");
-                                        }else{
-                                            textGrade.setText((data.optString("grade")+"年级")+s);
+                                        } else {
+                                            textGrade.setText((data.optString("grade") + "年级") + s);
                                         }
-                                        Glide.with(UserInfoActivity.this).load("http://47.106.112.29:8080/"+data.optString("uicon")).into(imageIcon);
+                                        if (!data.optString("uicon").equals("null")) {
+                                            Glide.with(UserInfoActivity.this).load("http://47.106.112.29:8080/" + data.optString("uicon")).into(imageIcon);
+                                        }
                                     }
                                 });
                             }

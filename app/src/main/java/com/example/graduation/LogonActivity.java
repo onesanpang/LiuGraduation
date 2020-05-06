@@ -53,6 +53,7 @@ public class LogonActivity extends AppCompatActivity implements View.OnClickList
                     editor.putString("password",editPass.getText().toString());
                     editor.commit();
                     startActivity(new Intent(LogonActivity.this, ImportActivity.class));
+                    finish();
                     break;
             }
         }

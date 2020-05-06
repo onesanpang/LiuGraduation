@@ -224,6 +224,7 @@ public class CheckFragment extends Fragment implements View.OnClickListener {
                     Bitmap bit = null;
                     try {
                         bit = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(imageUri));
+                        loadImage(compressImage(bit),url);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }

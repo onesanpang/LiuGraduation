@@ -55,6 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <EditText
+            android:id="@+id/parent_edit_classnumber"
             android:layout_marginTop="5dp"
             android:hint="请填写老师提供的班级号"
             android:textSize="14dp"
@@ -74,6 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <EditText
+            android:id="@+id/parent_edit_name"
             android:layout_marginTop="5dp"
             android:hint="请填写孩子的真实姓名"
             android:textSize="14dp"
@@ -86,6 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="0.1dp"/>
         <Button
+            android:id="@+id/parent_button"
             android:layout_marginTop="20dp"
             android:text="加入班级"
             android:background="@drawable/buttonpractice_background"

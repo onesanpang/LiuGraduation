@@ -59,6 +59,7 @@ public class ImportActivity extends AppCompatActivity implements View.OnClickLis
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
             editor.putString("nickName", String.valueOf(msg.obj));
+            Log.e("身份", String.valueOf(msg.what));
             editor.putString("identity", String.valueOf(msg.what));
             editor.commit();
         }

@@ -48,8 +48,9 @@ public class UserIdentityActivity extends AppCompatActivity {
     private TextView textSave;
     private int itemPosition;
     private RadioGroup radioGroup;
-    private int identity;
+    private String identity;
     private String updateUrl = "http://47.106.112.29:8080/user/updateNickName";
+    private TextView textIdentity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,19 +71,7 @@ public class UserIdentityActivity extends AppCompatActivity {
 
         gradeListView = findViewById(R.id.useridentity_listview_grade);
 
-        radioGroup = findViewById(R.id.useridentity_radiogroup);
-
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-               if (checkedId == R.id.useridentity_parent_but){
-                   identity = 1;
-               }else if (checkedId == R.id.useridentity_teacher_but){
-                   identity = 2;
-               }
-            }
-        });
-
+        textIdentity = findViewById(R.id.useridentity_text_identity);
 
         gradeList = new ArrayList<>();
         for (int i = 0; i < grade.length; i++) {
@@ -101,6 +90,13 @@ public class UserIdentityActivity extends AppCompatActivity {
 
         sp = getSharedPreferences("user", Context.MODE_PRIVATE);
         uid = sp.getString("uid","");
+        identity = sp.getString("identity","");
+
+        if (identity.equals("1")){
+            textIdentity.setText("家长");
+        }else if (identity.equals("2")){
+            textIdentity.setText("老师");
+        }
 
         textSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,7 +114,7 @@ public class UserIdentityActivity extends AppCompatActivity {
     }
 
     private void updateUserInfo(String url){
-        Person person = new Person(uid,grade[itemPosition],identity);
+        Person person = new Person(uid,grade[itemPosition]);
         Gson gson = new Gson();
         String json = gson.toJson(person);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
@@ -130,7 +126,6 @@ public class UserIdentityActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                Log.e("useridentity",response.body().string());
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -194,6 +189,10 @@ public class UserIdentityActivity extends AppCompatActivity {
         String grade;
         int identity;
 
+        public Person(String id,String grade){
+            this.id = id;
+            this.grade = grade;
+        }
         public Person(String id,String grade,int identity){
             this.id = id;
             this.grade = grade;
